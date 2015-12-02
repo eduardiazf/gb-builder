@@ -9,12 +9,6 @@ then
   exit 1;
 fi
 
-if [ -z $APP ];
-then
-  echo "Error: Must provide the name of the app";
-  exit 1;
-fi
-
 if [ ! -e "/var/run/docker.sock" ];
 then
   echo "Error: Must mount /var/lib/docker.sock";
@@ -28,9 +22,10 @@ then
 fi
 
 # compile
-echo "Building $APP"
+echo -e "Building `gb list` \n"
 gb info && CGO_ENABLED=${CGO_ENABLED:-0} gb build
 
 # Build app container
-cd /app && cp /src/bin/$APP . && cp $DOCKERFILE .
+echo -e "\nBuilding container $tagName"
+cd /app && cp /src/bin/* . && cp $DOCKERFILE .
 docker build -t $tagName .
