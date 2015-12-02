@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 tagName=$1
-DOCKERFILE=`find /src -name Dockerfile -type f`
+DOCKERFILE=`find /project -name Dockerfile -type f`
 
 if [ -z $tagName ];
 then
@@ -15,9 +15,9 @@ then
   exit 1;
 fi
 
-if ( find /src -maxdepth 0 -empty | read v );
+if ( find /project -maxdepth 0 -empty | read v );
 then
-  echo "Error: Must mount Go source code into /src directory"
+  echo "Error: Must mount Go source code into /project directory"
   exit 1;
 fi
 
@@ -27,5 +27,5 @@ gb info && CGO_ENABLED=${CGO_ENABLED:-0} gb build
 
 # Build app container
 echo -e "\nBuilding container $tagName"
-cd /app && cp /src/bin/* . && cp $DOCKERFILE .
+cd /app && cp /project/bin/* . && cp $DOCKERFILE .
 docker build -t $tagName .

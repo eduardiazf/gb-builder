@@ -1,10 +1,10 @@
-FROM golang:1.5
+FROM golang:1.5.1
 MAINTAINER Eduardo Diaz <eduardiazf@gmail.com>
 
 ENV GBVERSION v0.3.2
 ENV DOCKER_VERSION 1.9.0
 
-RUN mkdir -p /app
+RUN mkdir -p /app /project
 RUN apt-get update
 
 # Install Docker binary
@@ -23,5 +23,5 @@ RUN mkdir -p $GOPATH/src/github.com/constabulary && \
 COPY build.sh /
 RUN chmod +x /build.sh
 
-WORKDIR /src
+WORKDIR /project
 ENTRYPOINT ["/build.sh"]
